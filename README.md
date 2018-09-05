@@ -12,3 +12,5 @@ These products include:
 - [Billr](http://billr.me/)
 - [Divvy](https://getdivvy.com/)
 - [Venmo](https://venmo.com/)
+
+This PWA is going to be awesome!
