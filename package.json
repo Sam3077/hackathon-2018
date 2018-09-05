@@ -1,6 +1,17 @@
 {
   "name": "groupsplit",
-  "repository": "https://github.com/Sam3077/hackathon-2018.git",
+  "repository": "https://github.com/Sam3077/hackathon-2018",
   "license": "MIT",
-  "private": true
+  "private": true,
+  "dependencies": {
+    "react": "^16.4.2",
+    "react-dom": "^16.4.2",
+    "react-scripts": "1.1.5"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  }
 }
