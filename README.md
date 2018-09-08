@@ -13,4 +13,4 @@ These products include:
 - [Divvy](https://getdivvy.com/)
 - [Venmo](https://venmo.com/)
 
-This PWA is going to be awesome! WooHoo!
+Test!
