@@ -12,5 +12,3 @@ These products include:
 - [Billr](http://billr.me/)
 - [Divvy](https://getdivvy.com/)
 - [Venmo](https://venmo.com/)
-
-Test!
