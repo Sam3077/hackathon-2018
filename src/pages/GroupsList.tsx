@@ -2,8 +2,11 @@ import * as React from "react";
 import styled from "styled-components";
 import Colors from "../Colors";
 import GroupsListItem from '../components/GroupsListItem';
+import {Redirect} from 'react-router';
 import {List, FormControl, Input, InputAdornment} from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
+import * as firebase from 'firebase/app';
+import 'firebase/firestore';
 
 const Background = styled.div`
   background-color: ${Colors.DarkBackground};
@@ -51,17 +54,37 @@ const StyledSearch = styled(Search)`
     font-size: 500px;
 `;
 
+const db = firebase.firestore();
+db.settings({timestampsInSnapshots: true});
 class GroupsList extends React.Component {
     public state = {
-
+        imageUrl: require('../pictures/default.png'),
+        authenticated: true
     };
+
+    componentWillMount() {
+        firebase.auth().onAuthStateChanged(user => {
+            if (user) {
+                db.collection('users').doc(user.uid).get().then(doc => {
+                    const data = doc.data();
+                    if (data && data.image) {
+                        this.setState({imageUrl: data.image});
+                    }
+                })
+            } else {
+                console.log("not authenticated");
+                this.setState({authenticated: false});
+            }
+        })
+    }
 
     public render() {
         return (
             <Background>
+                {!this.state.authenticated ? <Redirect to="/" /> : <div/>}
                 <NavBar>
                     <NavBarLeft>
-                        <ProfPic src={require('../pictures/default.png')} />
+                        <ProfPic src={this.state.imageUrl} />
                     </NavBarLeft>
                     <NavBarRight>
                         <SearchContainer>
