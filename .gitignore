@@ -104,3 +104,4 @@ yarn-error.log*
 package-lock.json
 
 functions/private
+private/

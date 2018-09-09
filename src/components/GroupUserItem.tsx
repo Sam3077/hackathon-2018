@@ -1,9 +1,8 @@
 import * as React from 'react';
 import {ListItem, IconButton} from '@material-ui/core';
-import {Link} from 'react-router-dom';
 import styled from 'styled-components';
 import Colors from '../Colors';
-import MoreVert from '@material-ui/icons/MoreVert';
+import MoreVert from '@material-ui/icons/MoreVert'
 
 const ItemText = styled.div`
     display: flex;
@@ -45,8 +44,7 @@ type Props = {
     debt: number
 }
 const GroupsListItem = ({name, icon, debt}: Props) => (
-    <Link to={"/Group/" + escape(name)} style={{textDecoration: "none", color: "black"}}>
-    <ListItem button={true} >
+    <ListItem button={true} style={{width: '95%', backgroundColor: Colors.DarkBackground, margin: '10px auto'}}>
         <GroupIcon src={icon} />
         <ItemText>
             <Title>{name}</Title>
@@ -56,7 +54,6 @@ const GroupsListItem = ({name, icon, debt}: Props) => (
             }} onTouchStart={event => { event.stopPropagation()}}><TriDot/></Options>
         </ItemText>
     </ListItem>
-    </Link>
 );
 
 export default GroupsListItem;
