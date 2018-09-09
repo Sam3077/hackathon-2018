@@ -1,11 +1,14 @@
 import * as React from "react";
 import styled from "styled-components";
 import Colors from "../Colors";
-import Input from "@material-ui/core/Input"
+import Input from "@material-ui/core/Input";
+import GroupsListItem from '../components/GroupsListItem';
+import List from '@material-ui/core/List';
 
 const Background = styled.div`
   background-color: ${Colors.DarkBackground};
-  height: 100vh;
+  height: 100%;
+  min-height: 100vh;
   width: 100vw;
 `;
 
@@ -59,6 +62,12 @@ class GroupsList extends React.Component {
                         <Search type="search"/>
                     </NavBarRight>
                 </NavBar>
+                <List>
+                    <GroupsListItem 
+                        icon={require('../pictures/default.png')} 
+                        name="Test!" 
+                        debt={-5}/>
+                </List>
             </Background>
         );
     }

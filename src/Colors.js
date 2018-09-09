@@ -6,6 +6,7 @@ const Colors = {
   Gray: "#474A48",
   LightGray: "#909590",
   LightGreen: "#9AE19D",
+  LightRed: "#DD5C59",
 
   // Text Colors
   StandardText: "#f9f9f9"
