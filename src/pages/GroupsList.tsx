@@ -1,10 +1,9 @@
 import * as React from "react";
 import styled from "styled-components";
 import Colors from "../Colors";
-import Input from "@material-ui/core/Input";
 import GroupsListItem from '../components/GroupsListItem';
-import {List, FormControl, Input, InputAdornment, SearchIcon} from '@material-ui/core';
-import FormControl from '@material-ui/core/FormControl';
+import {List, FormControl, Input, InputAdornment} from '@material-ui/core';
+import SearchIcon from '@material-ui/icons/Search';
 
 const Background = styled.div`
   background-color: ${Colors.DarkBackground};
