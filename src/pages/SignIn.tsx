@@ -1,17 +1,12 @@
 import * as React from "react";
 import styled from "styled-components";
 import Colors from "../Colors";
+import config from "../private/firebaseConfig";
 
 import * as firebase from "firebase";
 import * as firebaseui from "firebaseui";
 
 import "firebaseui/dist/firebaseui.css";
-
-const config = {
-  apiKey: "AIzaSyA1yIN51yoEkvpGLWLYiJvVWfhK7gdG2jY",
-  authDomain: "groupsplit-2c2b5.firebaseapp.com",
-  projectId: "groupsplit-2c2b5",
-};
 
 firebase.initializeApp(config);
 const Background = styled.div`
@@ -26,6 +21,10 @@ const Background = styled.div`
 
 const Loader = styled.div`
   display: ${({hidden}: {hidden: boolean}) => hidden ? 'none' : 'block'}
+`
+const Title = styled.h1`
+  color: ${Colors.StandardText};
+  textAlign: center;
 `
 
 class SignIn extends React.Component {
@@ -67,6 +66,7 @@ class SignIn extends React.Component {
   public render() {
     return (
     <Background >
+      <Title>GroupSplit</Title>
       <div id="firebaseui-auth-container" />
       <Loader hidden={this.state.loaderHidden}>Loading...</Loader>
     </Background>
