@@ -7,7 +7,7 @@ import SpeedDialAction from "../components/SpeedDialAction";
 import SpeedDialIcon from "@material-ui/lab/SpeedDialIcon"
 import { Create, Add } from "@material-ui/icons";
 import GroupsListItem from '../components/GroupsListItem';
-import { Redirect } from 'react-router';
+import { Redirect } from 'react-router-dom';
 import { List, FormControl, Input, InputAdornment } from '@material-ui/core';
 import * as firebase from 'firebase/app';
 import 'firebase/firestore';
@@ -66,6 +66,7 @@ const SpeedDialContainer = styled.div`
 const db = firebase.firestore();
 db.settings({ timestampsInSnapshots: true });
 class GroupsList extends React.Component {
+    props: {history: any}
     public state = {
         speedDialOpen: false,
         imageUrl: require('../pictures/default.png'),
@@ -121,7 +122,7 @@ class GroupsList extends React.Component {
                         onMouseEnter={isTouch ? undefined : () => this.setState({ speedDialOpen: true })}
                         onMouseLeave={isTouch ? undefined : () => this.setState({ speedDialOpen: false })}>
                         <SpeedDialAction icon={<Add />} tooltipTitle="Add Transaction" tooltipOpen />
-                        <SpeedDialAction icon={<Create />} tooltipTitle="Create Group" tooltipOpen />
+                        <SpeedDialAction icon={<Create />} tooltipTitle="Create Group" tooltipOpen onClick={() => {this.props.history.push("/NewGroup")}}/>
                     </SpeedDial>
                 </SpeedDialContainer>
             </Background>
