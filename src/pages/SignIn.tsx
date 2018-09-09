@@ -1,6 +1,7 @@
 import * as React from "react";
 import styled from "styled-components";
 import Colors from "../Colors";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 import * as firebase from "firebase";
 import * as firebaseui from "firebaseui";
@@ -19,15 +20,34 @@ const Background = styled.div`
   display: flex;
   align-items: center;
   flex-direction: column;
-  justify-content: center;
 `;
-
 const Loader = styled.div`
-  display: ${({hidden}: {hidden: boolean}) => hidden ? 'none' : 'block'}
+  display: ${({hidden}: {hidden: boolean}) => hidden ? 'none' : 'block'};
+  align-self: center;
 `
 const Title = styled.h1`
+  color: ${Colors.LightGreen};
+  text-align: center;
+  margin-bottom: 0px;
+`
+const Body = styled.p`
   color: ${Colors.StandardText};
-  textAlign: center;
+  width: 80vw;
+  align-self: center;
+  text-align: center;
+`
+const MenuPortion = styled.div`
+  flex: 1;
+  align-item: center;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
+`
+const BottomPortion = MenuPortion.extend`
+  justify-content: flex-start;
+  background-color: rgba(0, 0, 0, 0.25);
+  padding-top: 10px;
 `
 
 class SignIn extends React.Component {
@@ -40,21 +60,17 @@ class SignIn extends React.Component {
   public componentDidMount() {
     this.ui.start("#firebaseui-auth-container", {
       callbacks: {
-        signInSuccessWithAuthResult(authResult, redirectUrl) {
-          // User successfully signed in.
-          // Return type determines whether we continue the redirect automatically
-          // or whether we leave that to developer to handle.
+        signInSuccessWithAuthResult: (authResult, redirectUrl) => {
+          this.setState({loaderHidden: false});
           return false;
         },
         uiShown: () => {
           this.setState({loaderHidden: true});
         }
       },
-      // Will use popup for IDP Providers sign-in flow instead of the default, redirect.
       signInFlow: 'popup',
       credentialHelper: firebaseui.auth.CredentialHelper.NONE,
       signInOptions: [
-        // Leave the lines as is for the providers you want to offer your users.
         {
 					provider: firebase.auth.EmailAuthProvider.PROVIDER_ID,
 					requireDisplayName: false
@@ -69,9 +85,14 @@ class SignIn extends React.Component {
   public render() {
     return (
     <Background >
-      <Title>GroupSplit</Title>
-      <div id="firebaseui-auth-container" />
-      <Loader hidden={this.state.loaderHidden}>Loading...</Loader>
+      <MenuPortion>
+        <Title>Welcome to Group Split</Title>
+        <Body>The easiest, fastest, and most effective way to split bills.</Body>
+      </MenuPortion>
+      <BottomPortion>
+        <div id="firebaseui-auth-container" />
+        <Loader hidden={this.state.loaderHidden}><CircularProgress variant="indeterminate"/></Loader>
+      </BottomPortion>
     </Background>
     );
   }
