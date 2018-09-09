@@ -7,6 +7,8 @@ import SearchIcon from "@material-ui/icons/Search";
 import SpeedDial from "@material-ui/lab/SpeedDial";
 // import SpeedDialIcon from "@material-ui/lab/SpeedDialIcon";
 import SpeedDialAction from "@material-ui/lab/SpeedDialAction";
+import SpeedDialIcon from "@material-ui/lab/SpeedDialIcon"
+import {Create, Add} from "@material-ui/icons";
 
 const Background = styled.div`
   background-color: ${Colors.DarkBackground};
@@ -61,7 +63,9 @@ const SpeedDialContainer = styled.div`
 `;
 
 class GroupsList extends React.Component {
-  public state = {};
+  public state = {
+      speedDialOpen: false
+  };
 
   public render() {
     return (
@@ -100,11 +104,15 @@ class GroupsList extends React.Component {
           )}
         </List>
         <SpeedDialContainer>
-          <SpeedDial ariaLabel="Lol. Not accessible" icon={<div />} open={true}>
-            <SpeedDialAction icon={<div />} />
-            <SpeedDialAction icon={<div />} />
-            <SpeedDialAction icon={<div />} />
-            <SpeedDialAction icon={<div />} />
+          <SpeedDial 
+            ariaLabel="Actions" 
+            icon={<SpeedDialIcon />} 
+            open={this.state.speedDialOpen}
+            onClick={() => this.setState({speedDialOpen: !this.state.speedDialOpen})}
+            onMouseEnter={() => this.setState({speedDialOpen: true})}
+            onMouseLeave={() => this.setState({speedDialOpen: false})}>
+            <SpeedDialAction icon={<Add />} tooltipTitle="Add Transaction" />
+            <SpeedDialAction icon={<Create />} tooltipTitle="Create Group" />
           </SpeedDial>
         </SpeedDialContainer>
       </Background>
