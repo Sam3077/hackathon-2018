@@ -5,8 +5,7 @@ import GroupsListItem from "../components/GroupsListItem";
 import { List, FormControl, Input, InputAdornment } from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
 import SpeedDial from "@material-ui/lab/SpeedDial";
-// import SpeedDialIcon from "@material-ui/lab/SpeedDialIcon";
-import SpeedDialAction from "@material-ui/lab/SpeedDialAction";
+import SpeedDialAction from "../components/SpeedDialAction";
 import SpeedDialIcon from "@material-ui/lab/SpeedDialIcon"
 import {Create, Add} from "@material-ui/icons";
 
@@ -68,6 +67,11 @@ class GroupsList extends React.Component {
   };
 
   public render() {
+    let isTouch;
+    if (typeof document !== 'undefined') {
+      isTouch = 'ontouchstart' in document.documentElement;
+    }
+
     return (
       <Background>
         <NavBar>
@@ -109,10 +113,10 @@ class GroupsList extends React.Component {
             icon={<SpeedDialIcon />} 
             open={this.state.speedDialOpen}
             onClick={() => this.setState({speedDialOpen: !this.state.speedDialOpen})}
-            onMouseEnter={() => this.setState({speedDialOpen: true})}
-            onMouseLeave={() => this.setState({speedDialOpen: false})}>
-            <SpeedDialAction icon={<Add />} tooltipTitle="Add Transaction" />
-            <SpeedDialAction icon={<Create />} tooltipTitle="Create Group" />
+            onMouseEnter={isTouch ? undefined : () => this.setState({speedDialOpen: true})}
+            onMouseLeave={isTouch ? undefined : () => this.setState({speedDialOpen: false})}>
+            <SpeedDialAction icon={<Add />} tooltipTitle="Add Transaction" tooltipOpen />
+            <SpeedDialAction icon={<Create />} tooltipTitle="Create Group" tooltipOpen />
           </SpeedDial>
         </SpeedDialContainer>
       </Background>

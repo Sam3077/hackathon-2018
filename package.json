@@ -4,9 +4,9 @@
   "license": "MIT",
   "private": true,
   "dependencies": {
-    "@material-ui/core": "^3.0.3",
+    "@material-ui/core": "latest",
     "@material-ui/icons": "^3.0.1",
-    "@material-ui/lab": "^3.0.0-alpha.15",
+    "@material-ui/lab": "latest",
     "firebase": "^5.4.2",
     "firebaseui": "^3.4.0",
     "react": "^16.4.2",
