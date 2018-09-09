@@ -104,6 +104,7 @@ const db = firebase.firestore();
 db.settings({ timestampsInSnapshots: true });
 class GroupsList extends React.Component {
     props: { history: any }
+    groupsList: {icon: any, name: string, debt: number, id: string, members: Array<string>}[] = []
     public state = {
         speedDialOpen: false,
         imageUrl: require('../pictures/default.png'),
@@ -122,6 +123,15 @@ class GroupsList extends React.Component {
                             displayName: data.displayName
                         });
                     }
+                });
+                db.collection('users').doc(user.uid).collection("groups").get().then(snapshot => {
+                    snapshot.forEach(doc => {
+                        const data = doc.data();
+                        if (data) {
+                            this.groupsList.push({icon: data.image, name: data.displayName, debt: 0, id: doc.id, members: data.members})
+                        }
+                    });
+                    this.forceUpdate();
                 })
             } else {
                 console.log("not authenticated");
@@ -168,16 +178,22 @@ class GroupsList extends React.Component {
                         <DropDownList>View Your History</DropDownList>
                         <DropDownList>View Your Transactions</DropDownList>
                         <DropDownList>Change Display Name</DropDownList>
-                        <DropDownList style={{border: 'none'}}><Button variant="contained" style={{ backgroundColor: Colors.DarkGreen, margin: '5px auto', display: 'block'}}>
+                        <DropDownList style={{border: 'none'}}><Button variant="contained" onClick={() => firebase.auth().signOut()} style={{ backgroundColor: Colors.DarkGreen, margin: '5px auto', display: 'block'}}>
                             Logout
                             </Button></DropDownList>
                     </DropDownContent>
                 </DropDownContainer>
                 <List>
-                    <GroupsListItem
-                        icon={require('../pictures/default.png')}
-                        name="Test!"
-                        debt={-5} />
+                    {this.groupsList.map((item, index) => (
+                        <GroupsListItem 
+                            icon={item.icon}
+                            name={item.name}
+                            debt={item.debt}
+                            id={item.id}
+                            key={index}
+                            members={item.members}
+                        />
+                    ))}
                 </List>
                 <SpeedDialContainer>
                     <SpeedDial

@@ -2,6 +2,7 @@
   "name": "groupsplit",
   "repository": "https://github.com/Sam3077/hackathon-2018",
   "license": "MIT",
+  "homepage": "https://groupsplit-2c2b5.firebaseapp.com/",
   "private": true,
   "dependencies": {
     "@material-ui/core": "latest",
@@ -22,7 +23,9 @@
     "test": "react-scripts-ts test --env=jsdom",
     "eject": "react-scripts-ts eject",
     "preserve": "npm run build",
-    "serve": "cd build && npx serve"
+    "serve": "cd build && npx serve",
+    "predeploy": "npm run build",
+    "deploy": "firebase deploy --only hosting"
   },
   "devDependencies": {
     "@types/jest": "^23.3.1",

@@ -55,7 +55,8 @@ const GroupPicture = styled.img`
 `
 
 class GroupsList extends React.Component {
-    props: {match: any};
+    props: {location: any};
+    navState = this.props.location.state;
 
     public render() {
         return (
@@ -64,24 +65,22 @@ class GroupsList extends React.Component {
                     <NavBarLeft>
                         <Link to="/GroupsList" replace={true}><BackArrow style={{ fill: 'white', height: "50px", width: "50px" }} /></Link>
                     </NavBarLeft>
-                    <Title>{this.props.match.params.group}</Title>
+                    <Title>{this.navState.groupName}</Title>
                     <NavBarRight>
                         <Settings style={{ fill: 'white', height: "50px", width: "50px" }} />
                     </NavBarRight>
                 </NavBar>
                 <GroupHeader>
-                    <GroupPicture src={require('../pictures/group.png')} />
+                    <GroupPicture src={this.navState.icon && this.navState.icon != '' ? this.navState.icon : require('../pictures/default.png')} />
                     <Edit style={{ fill: 'white', height: "40px", width: "40px", backgroundColor: 'black', marginLeft: '-50px', border: "white 2px solid", borderRadius: '5px' }} />
                 </GroupHeader>
                 <List style={{ width: '100%', minHeight: '78vh', backgroundColor: Colors.LightGray }}>
-                    <GroupsUserItem
+                    {this.navState.members.forEach((member: string) => (
+                        <GroupsUserItem
                         icon={require('../pictures/default.png')}
-                        name="Test User 1"
+                        name={member}
                         debt={+10} />
-                    <GroupsUserItem
-                        icon={require('../pictures/default.png')}
-                        name="Test User 2"
-                        debt={-5} />
+                    ))}
                 </List>
             </Background>
         );
