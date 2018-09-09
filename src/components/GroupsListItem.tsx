@@ -17,6 +17,7 @@ const GroupIcon = styled.img`
     border-radius: 50%;
     border: ${Colors.LightGray} 2px solid;
     height: 60px;
+    width: 60px;
     flex: 0;
 `;
 const Title = styled.h1`
@@ -42,10 +43,12 @@ const TriDot = styled(MoreVert)`
 type Props = {
     name: string, 
     icon: any,
-    debt: number
+    debt: number,
+    id: string,
+    members: Array<string>
 }
-const GroupsListItem = ({name, icon, debt}: Props) => (
-    <Link to={"/Group/" + escape(name)} style={{textDecoration: "none", color: "black"}}>
+const GroupsListItem = ({name, icon, debt, id, members}: Props) => (
+    <Link to={{pathname: "/Group", state:{groupName: name, icon, id, members}}} style={{textDecoration: "none", color: "black", zIndex: 50}}>
     <ListItem button={true} >
         <GroupIcon src={icon} />
         <ItemText>

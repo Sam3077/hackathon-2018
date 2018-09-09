@@ -12,7 +12,10 @@ import "firebaseui/dist/firebaseui.css";
 firebase.initializeApp({
   apiKey: "AIzaSyA1yIN51yoEkvpGLWLYiJvVWfhK7gdG2jY",
   authDomain: "groupsplit-2c2b5.firebaseapp.com",
+  databaseURL: "https://groupsplit-2c2b5.firebaseio.com",
   projectId: "groupsplit-2c2b5",
+  storageBucket: "groupsplit-2c2b5.appspot.com",
+  messagingSenderId: "194492137783"
 });
 const Background = styled.div`
   background-color: ${Colors.DarkBackground};
@@ -50,14 +53,12 @@ const BottomPortion = styled(MenuPortion)`
   background-color: rgba(0, 0, 0, 0.25);
   padding-top: 10px;
 `
-
+const ui = new firebaseui.auth.AuthUI(firebase.auth());
 class SignIn extends React.Component {
   public state = {
     loaderHidden: false,
     authenticated: false
   };
-
-  private ui = new firebaseui.auth.AuthUI(firebase.auth());
 
   public componentDidMount() {
     firebase.auth().onAuthStateChanged(user => {
@@ -67,7 +68,7 @@ class SignIn extends React.Component {
       }
     })
 
-    this.ui.start("#firebaseui-auth-container", {
+    ui.start("#firebaseui-auth-container", {
       callbacks: {
         signInSuccessWithAuthResult: (authResult, redirectUrl) => {
           this.setState({loaderHidden: false});

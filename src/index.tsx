@@ -16,9 +16,9 @@ ReactDOM.render(
 		<div>
 			<Route exact={true} path="/" component={SignIn} />
 			<Route exact={true} path="/GroupsList" component={GroupsList} />
+			<Route exact={true} path="/Group" component={Group} />
 			<Route exact={true} path="/Scan/:groupName" component={Scan} />
 			<Route exact={true} path="/Scan" component={Scan} />
-			<Route exact={true} path="/Group/:group" component={Group} />
 			<Route exact={true} path="/NewGroup" component={NewGroup} />
 			<Route exact={true} path="/NewTransaction" component={NewTransaction} />
 		</div>

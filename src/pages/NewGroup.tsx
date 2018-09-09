@@ -5,13 +5,16 @@ import { Redirect, Link } from 'react-router-dom';
 import * as firebase from 'firebase/app';
 import ArrowBack from '@material-ui/icons/ArrowBack';
 import FormControl from '@material-ui/core/FormControl'
-import InputLabel from '@material-ui/core/InputLabel'
+import InputLabel from '@material-ui/core/InputLabel';
+import IconButton from '@material-ui/core/IconButton';
 import Input from '@material-ui/core/Input';
 import Button from '@material-ui/core/Button'
 import Edit from '@material-ui/icons/Edit';
 import { ReactMultiEmail } from 'react-multi-email';
 import 'react-multi-email/style.css';
 import 'firebase/firestore';
+import 'firebase/functions';
+const fetch = require("node-fetch");
 
 const Background = styled.div`
   background-color: ${Colors.DarkBackground};
@@ -39,8 +42,7 @@ const GroupHeader = styled.div`
     text-align: center;
     margin-top: 40px;
     margin-bottom: 40px;
-`
-
+`;
 const GroupPicture = styled.img`
     height: 200px;
     width: 200px;
@@ -57,7 +59,9 @@ class NewGroup extends React.Component{
     public state = {
         emails: [],
         uid: '',
-        authenticated: true
+        authenticated: true,
+        groupPicture: require('../pictures/group.png'),
+        groupName: '',
     }
 
     componentWillMount() {
@@ -70,6 +74,7 @@ class NewGroup extends React.Component{
         });
     }
 
+    private upload: any
     render() {
         const { emails } = this.state;
 
@@ -80,13 +85,28 @@ class NewGroup extends React.Component{
                     <Link to="/GroupsList" style={{ float: "left" }}><ArrowBack style={{ fill: 'white', height: "50px", width: "50px" }} /></Link>
                     <Title>Create New Group</Title>
                     <AddForm>
+                        <input style={{display: 'none'}} type="file" ref={(ref) => {this.upload = ref}} onChange={() => {
+                            var file = (document.querySelector('input[type=file]') as HTMLInputElement).files![0];
+                            var reader = new FileReader();
+                            reader.addEventListener(
+                                'load',
+                                () => {
+                                    this.setState({ groupPicture: reader.result });
+                                },
+                                false
+                            );
+
+                            if (file) {
+                                reader.readAsDataURL(file);
+                            }
+                        }}/>
                         <GroupHeader>
-                            <GroupPicture src={require('../pictures/group.png')} />
-                            <Edit style={{ fill: 'white', height: "40px", width: "40px", backgroundColor: 'black', marginLeft: '-50px', border: "white 2px solid", borderRadius: '5px' }} />
+                            <GroupPicture src={this.state.groupPicture} />
+                            <IconButton onClick={() => {this.upload.click()}} disableRipple={true} style={{marginLeft: '-50px'}}><Edit style={{ fill: 'white', height: "40px", width: "40px", backgroundColor: 'black', border: "white 2px solid", borderRadius: '5px' }} /></IconButton>
                         </GroupHeader>
                         <FormControl style={{ width: '100%', margin: '0 auto' }}>
                             <InputLabel style={{color: Colors.StandardText}} htmlFor="adornment-amount">Group Name</InputLabel>
-                            <Input style={{color: Colors.StandardText}}/>
+                            <Input onChange={elem => this.setState({groupName: elem.target.value})} style={{color: Colors.StandardText}}/>
                         </FormControl>
                         <FormControl style={{ width: '100%', margin: '0 auto' }}>
                         <EmailTitle>Add Users By Email:</EmailTitle>
@@ -110,7 +130,23 @@ class NewGroup extends React.Component{
                                 />
                                 <br />
                         </FormControl>
-                        <Button variant="contained" style={{ backgroundColor: Colors.DarkGreen, marginTop: '20px' }}>
+                        <Button variant="contained" style={{ backgroundColor: this.state.emails.length > 0 && this.state.groupName != '' ? Colors.LightGreen : Colors.DarkGreen, marginTop: '20px' }} onClick={() => {
+                            const user = firebase.auth().currentUser;
+                            if (user && this.state.emails.length > 0 && this.state.groupName != '') {
+                                user.getIdToken(false).then(token => {
+                                    //const newGroup = firebase.functions().httpsCallable('createNewGroup');
+                                    fetch("https://us-central1-groupsplit-2c2b5.cloudfunctions.net/createNewGroup", {
+                                        method: "POST",
+                                        body: JSON.stringify({
+                                            token: token,
+                                            name: this.state.groupName,
+                                            image: this.state.groupPicture,
+                                            members: this.state.emails                                  
+                                        })
+                                    }).then((res: any) => console.log(res));
+                                })
+                            }
+                        }}>
                             Create Group
                             </Button>
                     </AddForm>
