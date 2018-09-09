@@ -1,6 +1,7 @@
 import * as React from "react";
 import styled from "styled-components";
 import Colors from "../Colors";
+import {Link} from "react-router-dom";
 import Settings from '@material-ui/icons/Settings';
 import ArrowBack from '@material-ui/icons/ArrowBack';
 import { List } from '@material-ui/core';
@@ -16,18 +17,24 @@ const Background = styled.div`
 
 const NavBar = styled.nav`
     width: 100vw;
-    background-color: ${Colors.LightGray};
+    padding: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 `
-const NavBarLeft = styled.nav`
+const NavBarLeft = styled.div`
     float: left;
-    flex: 0;
 `
-
-const NavBarRight = styled.nav`
+const NavBarRight = styled.div`
     float: right;
     padding-right: 20px;
     overflow: hidden;
 `
+const Title = styled.h1`
+    color: ${Colors.StandardText};
+    font-size: 40px;
+    margin-top: 0px;
+`;
 const BackArrow = styled(ArrowBack)`
     height: 500px;
     width: 500px;
@@ -40,21 +47,24 @@ const GroupHeader = styled.div`
 `
 
 const GroupPicture = styled.img`
-height: 200px;
-width: 200px;
-background-color: #fff;
-border-radius: 50%;
-border: ${Colors.LightGray} 5px solid;
+    height: 200px;
+    width: 200px;
+    background-color: #fff;
+    border-radius: 50%;
+    border: ${Colors.LightGray} 5px solid;
 `
 
 class GroupsList extends React.Component {
+    props: {match: any};
+
     public render() {
         return (
             <Background>
                 <NavBar>
                     <NavBarLeft>
-                        <BackArrow style={{ fill: 'white', height: "50px", width: "50px" }} />
+                        <Link to="/GroupsList" replace={true}><BackArrow style={{ fill: 'white', height: "50px", width: "50px" }} /></Link>
                     </NavBarLeft>
+                    <Title>{this.props.match.params.group}</Title>
                     <NavBarRight>
                         <Settings style={{ fill: 'white', height: "50px", width: "50px" }} />
                     </NavBarRight>
