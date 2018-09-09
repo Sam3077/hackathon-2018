@@ -7,8 +7,8 @@ import SpeedDialAction from "../components/SpeedDialAction";
 import SpeedDialIcon from "@material-ui/lab/SpeedDialIcon"
 import { Create, Add } from "@material-ui/icons";
 import GroupsListItem from '../components/GroupsListItem';
-import { Redirect } from 'react-router-dom';
-import { List, FormControl, Input, InputAdornment } from '@material-ui/core';
+import { Redirect, Link } from 'react-router-dom';
+import { List, FormControl, Input, InputAdornment, Modal } from '@material-ui/core';
 import * as firebase from 'firebase/app';
 import 'firebase/firestore';
 
@@ -63,6 +63,43 @@ const SpeedDialContainer = styled.div`
   bottom: 20px;
   position: fixed;
 `;
+const CustomModal = styled(Modal)`
+    align-items: center;
+    justify-content: center;
+    display: flex
+`;
+const ModalView = styled.div`
+    background-color: white;
+    border-radius: 5px;
+    max-width: 75vw;
+`
+const ModalTitle = styled.h1`
+    text-align: center;
+    padding: 10px;
+    color: ${Colors.DarkText}
+`;
+const ButtonView = styled.div`
+    background-color: rgba(0, 0, 0, 0.25);
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+`;
+const ButtonText = styled.h2`
+    text-align: center;
+    align-self: center;
+`;
+const ButtonWrapper = styled.div`
+    display: flex;
+    flex: 1;
+    padding 5px;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    border: ${Colors.Gray} 1px solid;
+`;
+
 const db = firebase.firestore();
 db.settings({ timestampsInSnapshots: true });
 class GroupsList extends React.Component {
@@ -70,7 +107,8 @@ class GroupsList extends React.Component {
     public state = {
         speedDialOpen: false,
         imageUrl: require('../pictures/default.png'),
-        authenticated: true
+        authenticated: true,
+        modalOpen: false
     };
 
     componentWillMount() {
@@ -121,10 +159,23 @@ class GroupsList extends React.Component {
                         onClick={() => this.setState({ speedDialOpen: !this.state.speedDialOpen })}
                         onMouseEnter={isTouch ? undefined : () => this.setState({ speedDialOpen: true })}
                         onMouseLeave={isTouch ? undefined : () => this.setState({ speedDialOpen: false })}>
-                        <SpeedDialAction icon={<Add />} tooltipTitle="Add Transaction" tooltipOpen />
-                        <SpeedDialAction icon={<Create />} tooltipTitle="Create Group" tooltipOpen onClick={() => {this.props.history.push("/NewGroup")}}/>
+                        <SpeedDialAction icon={<Add />} tooltipTitle="Add Transaction" tooltipOpen onClick={() => this.setState({modalOpen: true})}/>
+                        <SpeedDialAction icon={<Create />} tooltipTitle="Create Group" tooltipOpen onClick={() => this.props.history.push("/NewGroup")}/>
                     </SpeedDial>
                 </SpeedDialContainer>
+                <CustomModal open={this.state.modalOpen} onBackdropClick={() => this.setState({modalOpen: false})} onEscapeKeyDown={() => this.setState({modalOpen: false})} disableAutoFocus={true}>
+                    <ModalView>
+                        <ModalTitle>How would you like to enter the transaction?</ModalTitle>
+                        <ButtonView>
+                            <ButtonWrapper>
+                                <ButtonText><Link to="/" style={{textDecoration: 'none', color: Colors.DarkText}}>Enter Manually</Link></ButtonText>
+                            </ButtonWrapper>
+                            <ButtonWrapper>
+                                <ButtonText><Link to="/Scan" style={{textDecoration: 'none', color: Colors.DarkText}}>Scan Receipt</Link></ButtonText>
+                            </ButtonWrapper>
+                        </ButtonView>
+                    </ModalView>
+                </CustomModal>
             </Background>
         );
     }

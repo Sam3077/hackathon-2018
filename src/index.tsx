@@ -6,11 +6,9 @@ import './index.css';
 import SignIn from './pages/SignIn';
 import GroupsList from './pages/GroupsList';
 import Group from './pages/Group';
-<<<<<<< HEAD
 import Scan from './pages/Scan';
-=======
 import NewGroup from './pages/NewGroup';
->>>>>>> newGroup
+import NewTransaction from './pages/NewTransaction';
 import registerServiceWorker from './registerServiceWorker';
 
 ReactDOM.render(
@@ -22,6 +20,7 @@ ReactDOM.render(
 			<Route exact={true} path="/Scan" component={Scan} />
 			<Route exact={true} path="/Group/:group" component={Group} />
 			<Route exact={true} path="/NewGroup" component={NewGroup} />
+			<Route exact={true} path="/NewTransaction" component={NewTransaction} />
 		</div>
 	</Router>,
 	document.getElementById('root') as HTMLElement

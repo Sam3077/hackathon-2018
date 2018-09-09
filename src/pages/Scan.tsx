@@ -41,6 +41,7 @@ const BackLink = styled(Link)`
 `;
 
 class GroupsList extends React.Component {
+    props: {history: any}
     state = {
         pictureTaken: false
     }
@@ -89,7 +90,15 @@ class GroupsList extends React.Component {
                     })
                 })
                 .then(res => res.json())
-                .then(json => console.log(json))
+                .then(json => {
+                    console.log(json);  
+                   this.props.history.push({
+                       pathname: "/NewTransaction",
+                       state: {
+                           incomingData: json
+                       }
+                   })
+                })      
                 .catch(e => console.log(e));
             }
         });
