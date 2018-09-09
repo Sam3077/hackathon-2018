@@ -27,6 +27,6 @@
   to { transform: rotate(360deg); }
 }
 
-.resize{
-  font-size: 50px;
+.svg_icons{
+  transform: scale(1.8);
 }
