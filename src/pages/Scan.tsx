@@ -2,6 +2,8 @@ import * as React from "react";
 import styled from "styled-components";
 import Colors from '../Colors';
 import 'firebase/firestore';
+import apiKey from '../private/cloudVisionKey.js';
+import fetch from 'node-fetch';
 //import { Script } from "vm";
 
 const Background = styled.div`
@@ -16,11 +18,12 @@ const Background = styled.div`
 `
 const Video = styled.video`
     border-radius: 10px;
+    display: ${({videoVisible}: {videoVisible: boolean}) => videoVisible ? 'block' : 'none'}
 `
 
 const Canvas = styled.canvas`
-    height: 0px;
-    width: 0px;
+    border-radius: 10px;
+    display: ${({canvasVisible}: {canvasVisible: boolean}) => canvasVisible ? 'black' : 'none'}
 `
 
 const CaptureBtn = styled.button`
@@ -32,12 +35,16 @@ const CaptureBtn = styled.button`
     border-radius: 50%;
 `
 class GroupsList extends React.Component {
+    state = {
+        pictureTaken: false
+    }
+
     public componentDidMount() {
         var constraints = {
             audio: false,
             video: {
-                width: 540,
-                height: 960
+                width: window.innerHeight * 0.45,
+                height: window.innerHeight * 0.8
             }
         };
         var canvas = document.querySelector('canvas') || new HTMLCanvasElement;
@@ -51,14 +58,33 @@ class GroupsList extends React.Component {
         })
             .catch(function (err) { console.log(err.name + ":  " + err.message); });
 
-        (document.querySelector('#capture') || new HTMLVideoElement).addEventListener('click', function (event) {
+        (document.querySelector('#capture') || new HTMLVideoElement).addEventListener('click', (event) => {
             if (video) {
                 canvas.width = video.clientWidth;
                 canvas.height = video.clientHeight;
                 var context = canvas.getContext('2d') || new CanvasRenderingContext2D();
                 context.drawImage(video, 0, 0);
                 var dt = canvas.toDataURL('image/jpeg');
-                console.log("DataURL:" + dt);
+                this.setState({pictureTaken: true});
+                fetch('https://vision.googleapis.com/v1/images:annotate?key=' + apiKey, {
+                    method: "POST",
+                    headers: {"Content-Type": "application/json"},
+                    body: JSON.stringify({
+                        "requests": [
+                            {
+                                "image": {
+                                    "content": dt.replace("data:image/jpeg;base64,", "")
+                                },
+                                "features": {
+                                    "type":"TEXT_DETECTION"
+                                }
+                            }
+                        ]
+                    })
+                })
+                .then(res => res.json())
+                .then(json => console.log(json))
+                .catch(e => console.log(e));
             }
         });
     }
@@ -66,8 +92,8 @@ class GroupsList extends React.Component {
     public render() {
         return (
             <Background>
-                <Video autoPlay className="video" /><br />
-                <Canvas /> <br />
+                <Video autoPlay className="video" videoVisible={!this.state.pictureTaken}/>
+                <Canvas canvasVisible={this.state.pictureTaken}/><br />
                 <CaptureBtn id="capture" />
             </Background>
         );
