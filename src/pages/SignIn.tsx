@@ -1,14 +1,17 @@
 import * as React from "react";
 import styled from "styled-components";
 import Colors from "../Colors";
-import config from "../private/firebaseConfig";
 
 import * as firebase from "firebase";
 import * as firebaseui from "firebaseui";
 
 import "firebaseui/dist/firebaseui.css";
 
-firebase.initializeApp(config);
+firebase.initializeApp({
+  apiKey: "AIzaSyA1yIN51yoEkvpGLWLYiJvVWfhK7gdG2jY",
+  authDomain: "groupsplit-2c2b5.firebaseapp.com",
+  projectId: "groupsplit-2c2b5",
+});
 const Background = styled.div`
   background-color: ${Colors.DarkBackground};
   height: 100vh;
