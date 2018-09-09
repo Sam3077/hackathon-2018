@@ -45,7 +45,7 @@ type Props = {
     debt: number
 }
 const GroupsListItem = ({name, icon, debt}: Props) => (
-    <Link to={"/Group/" + escape(name)} style={{textDecoration: "none", color: "black"}}>
+    <Link to={"/Group/" + escape(name)} style={{textDecoration: "none", color: "black", zIndex: 50}}>
     <ListItem button={true} >
         <GroupIcon src={icon} />
         <ItemText>
