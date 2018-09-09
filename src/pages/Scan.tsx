@@ -1,6 +1,8 @@
 import * as React from "react";
 import styled from "styled-components";
 import Colors from '../Colors';
+import ArrowBack from '@material-ui/icons/ArrowBack';
+import {Link} from 'react-router-dom';
 import 'firebase/firestore';
 import apiKey from '../private/cloudVisionKey.js';
 import fetch from 'node-fetch';
@@ -12,7 +14,6 @@ const Background = styled.div`
   min-height: 100vh;
   width: 100vw;
   display: flex;
-  justify-content: center;
   align-items: center;
   flex-direction: column;
 `
@@ -34,6 +35,11 @@ const CaptureBtn = styled.button`
     border: ${Colors.LightRed} 3px solid;
     border-radius: 50%;
 `
+const BackLink = styled(Link)`
+    align-self: flex-start;
+    margin: 10px;
+`;
+
 class GroupsList extends React.Component {
     state = {
         pictureTaken: false
@@ -59,7 +65,7 @@ class GroupsList extends React.Component {
             .catch(function (err) { console.log(err.name + ":  " + err.message); });
 
         (document.querySelector('#capture') || new HTMLVideoElement).addEventListener('click', (event) => {
-            if (video) {
+            if (video && !this.state.pictureTaken) {
                 canvas.width = video.clientWidth;
                 canvas.height = video.clientHeight;
                 var context = canvas.getContext('2d') || new CanvasRenderingContext2D();
@@ -92,6 +98,7 @@ class GroupsList extends React.Component {
     public render() {
         return (
             <Background>
+                <BackLink to="/GroupsList"><ArrowBack style={{ fill: 'white', height: "50px", width: "50px" }}/></BackLink>
                 <Video autoPlay className="video" videoVisible={!this.state.pictureTaken}/>
                 <Canvas canvasVisible={this.state.pictureTaken}/><br />
                 <CaptureBtn id="capture" />
