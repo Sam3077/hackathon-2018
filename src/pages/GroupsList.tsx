@@ -5,10 +5,10 @@ import SearchIcon from "@material-ui/icons/Search";
 import SpeedDial from "@material-ui/lab/SpeedDial";
 import SpeedDialAction from "../components/SpeedDialAction";
 import SpeedDialIcon from "@material-ui/lab/SpeedDialIcon"
-import {Create, Add, SearchIcon} from "@material-ui/icons";
+import { Create, Add } from "@material-ui/icons";
 import GroupsListItem from '../components/GroupsListItem';
-import {Redirect} from 'react-router';
-import {List, FormControl, Input, InputAdornment} from '@material-ui/core';
+import { Redirect } from 'react-router';
+import { List, FormControl, Input, InputAdornment } from '@material-ui/core';
 import * as firebase from 'firebase/app';
 import 'firebase/firestore';
 
@@ -63,20 +63,11 @@ const SpeedDialContainer = styled.div`
   bottom: 20px;
   position: fixed;
 `;
-
-class GroupsList extends React.Component {
-  public state = {
-      speedDialOpen: false
-  };
-
-  public render() {
-    let isTouch;
-    if (typeof document !== 'undefined') {
-      isTouch = 'ontouchstart' in document.documentElement;
 const db = firebase.firestore();
-db.settings({timestampsInSnapshots: true});
+db.settings({ timestampsInSnapshots: true });
 class GroupsList extends React.Component {
     public state = {
+        speedDialOpen: false,
         imageUrl: require('../pictures/default.png'),
         authenticated: true
     };
@@ -87,52 +78,55 @@ class GroupsList extends React.Component {
                 db.collection('users').doc(user.uid).get().then(doc => {
                     const data = doc.data();
                     if (data && data.image) {
-                        this.setState({imageUrl: data.image});
+                        this.setState({ imageUrl: data.image });
                     }
                 })
             } else {
                 console.log("not authenticated");
-                this.setState({authenticated: false});
+                this.setState({ authenticated: false });
             }
         })
     }
 
     public render() {
+        let isTouch;
+        if (typeof document !== 'undefined') {
+            isTouch = 'ontouchstart' in document.documentElement;
+        }
         return (
             <Background>
-                {!this.state.authenticated ? <Redirect to="/" /> : <div/>}
+                {!this.state.authenticated ? <Redirect to="/" /> : <div />}
                 <NavBar>
                     <NavBarLeft>
                         <ProfPic src={this.state.imageUrl} />
                     </NavBarLeft>
                     <NavBarRight>
                         <SearchContainer>
-                            <StyledSearch fullWidth={true} placeholder="Search" style={{"fontSize": "30px", "paddingBottom": "13px"}} type="search" id="input-with-icon-adornment" startAdornment={<InputAdornment position="start" style={{"marginBottom":"-20px"}}><SearchIcon /></InputAdornment>} />
+                            <StyledSearch fullWidth={true} placeholder="Search" style={{ "fontSize": "30px", "paddingBottom": "13px" }} type="search" id="input-with-icon-adornment" startAdornment={<InputAdornment position="start" style={{ "marginBottom": "-20px" }}><SearchIcon /></InputAdornment>} />
                         </SearchContainer>
                     </NavBarRight>
                 </NavBar>
                 <List>
-                    <GroupsListItem 
-                        icon={require('../pictures/default.png')} 
-                        name="Test!" 
-                        debt={-5}/>
+                    <GroupsListItem
+                        icon={require('../pictures/default.png')}
+                        name="Test!"
+                        debt={-5} />
                 </List>
-   <SpeedDialContainer>
-          <SpeedDial 
-            ariaLabel="Actions" 
-            icon={<SpeedDialIcon />} 
-            open={this.state.speedDialOpen}
-            onClick={() => this.setState({speedDialOpen: !this.state.speedDialOpen})}
-            onMouseEnter={isTouch ? undefined : () => this.setState({speedDialOpen: true})}
-            onMouseLeave={isTouch ? undefined : () => this.setState({speedDialOpen: false})}>
-            <SpeedDialAction icon={<Add />} tooltipTitle="Add Transaction" tooltipOpen />
-            <SpeedDialAction icon={<Create />} tooltipTitle="Create Group" tooltipOpen />
-          </SpeedDial>
-        </SpeedDialContainer>
+                <SpeedDialContainer>
+                    <SpeedDial
+                        ariaLabel="Actions"
+                        icon={<SpeedDialIcon />}
+                        open={this.state.speedDialOpen}
+                        onClick={() => this.setState({ speedDialOpen: !this.state.speedDialOpen })}
+                        onMouseEnter={isTouch ? undefined : () => this.setState({ speedDialOpen: true })}
+                        onMouseLeave={isTouch ? undefined : () => this.setState({ speedDialOpen: false })}>
+                        <SpeedDialAction icon={<Add />} tooltipTitle="Add Transaction" tooltipOpen />
+                        <SpeedDialAction icon={<Create />} tooltipTitle="Create Group" tooltipOpen />
+                    </SpeedDial>
+                </SpeedDialContainer>
             </Background>
         );
     }
-  }
 }
 
 export default GroupsList;
