@@ -4,6 +4,8 @@
   "license": "MIT",
   "private": true,
   "dependencies": {
+    "firebase": "^5.4.2",
+    "firebaseui": "^3.4.0",
     "react": "^16.4.2",
     "react-dom": "^16.4.2",
     "react-native-web": "^0.8.9",
