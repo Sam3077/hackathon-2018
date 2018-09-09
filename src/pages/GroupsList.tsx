@@ -13,24 +13,20 @@ const Background = styled.div`
 `;
 
 const NavBar = styled.nav`
-    width: 100%;
-    height: 75px;
+    width: 100vw;
     background-color: ${Colors.LightGray};
+    display: flex;
+    flex-direction: row;
 `
 const NavBarLeft = styled.nav`
-    float: left;
-    position: relative;
-    top: 50%;
-    transform: translateY(-50%);
+    flex: 0;
 `
 
 const NavBarRight = styled.nav`
-    padding: 20px;
-    float: right;
-    position: relative;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 88%;
+    align-self: center;
+    flex: 1;
+    padding-right: 20px;
+    overflow: hidden;
 `
 
 const ProfPic = styled.img`
@@ -42,13 +38,13 @@ const ProfPic = styled.img`
 `
 
 const SearchContainer = styled(FormControl)`
-    width: 100%;
     font-size: 300px;
+    width: 100%;
 `
 
 const Search = styled(Input)`
     height: 30px;
-    width: 100%;
+    min-width: 0px;
 `
 
 const StyledSearch = styled(Search)`
@@ -69,7 +65,7 @@ class GroupsList extends React.Component {
                     </NavBarLeft>
                     <NavBarRight>
                         <SearchContainer>
-                            <StyledSearch style={{"fontSize": "30px", "paddingBottom": "13px"}} type="search" id="input-with-icon-adornment" startAdornment={<InputAdornment position="start" style={{"marginBottom":"-20px"}}><SearchIcon /></InputAdornment>} />
+                            <StyledSearch fullWidth={true} placeholder="Search" style={{"fontSize": "30px", "paddingBottom": "13px"}} type="search" id="input-with-icon-adornment" startAdornment={<InputAdornment position="start" style={{"marginBottom":"-20px"}}><SearchIcon /></InputAdornment>} />
                         </SearchContainer>
                     </NavBarRight>
                 </NavBar>
