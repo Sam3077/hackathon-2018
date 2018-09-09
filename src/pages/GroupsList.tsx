@@ -1,7 +1,10 @@
 import * as React from "react";
 import styled from "styled-components";
 import Colors from "../Colors";
+import FormControl from '@material-ui/core/FormControl';
 import Input from "@material-ui/core/Input"
+import InputAdornment from "@material-ui/core/InputAdornment"
+import SearchIcon from "@material-ui/icons/Search"
 
 const Background = styled.div`
   background-color: ${Colors.DarkBackground};
@@ -22,7 +25,6 @@ const NavBarLeft = styled.nav`
 `
 
 const NavBarRight = styled.nav`
-    font-size: 5em;
     padding: 20px;
     float: right;
     position: relative;
@@ -38,10 +40,20 @@ const ProfPic = styled.img`
     border-radius: 50%;
     border: ${Colors.DarkBackground} 2px solid;
 `
+
+const SearchContainer = styled(FormControl)`
+    width: 100%;
+    font-size: 300px;
+`
+
 const Search = styled(Input)`
     height: 30px;
     width: 100%;
 `
+
+const StyledSearch = styled(Search)`
+    font-size: 500px;
+`;
 
 class GroupsList extends React.Component {
     public state = {
@@ -56,7 +68,9 @@ class GroupsList extends React.Component {
                         <ProfPic src={require('../pictures/default.png')} />
                     </NavBarLeft>
                     <NavBarRight>
-                        <Search type="search"/>
+                        <SearchContainer>
+                            <StyledSearch style={{"fontSize": "30px", "paddingBottom": "13px"}} type="search" id="input-with-icon-adornment" startAdornment={<InputAdornment position="start" style={{"marginBottom":"-20px"}}><SearchIcon /></InputAdornment>} />
+                        </SearchContainer>
                     </NavBarRight>
                 </NavBar>
             </Background>
