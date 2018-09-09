@@ -1,9 +1,10 @@
 import * as React from "react";
 import styled from "styled-components";
 import Colors from "../Colors";
+import {Redirect} from 'react-router';
 import CircularProgress from "@material-ui/core/CircularProgress";
 
-import * as firebase from "firebase";
+import * as firebase from "firebase/app";
 import * as firebaseui from "firebaseui";
 
 import "firebaseui/dist/firebaseui.css";
@@ -44,7 +45,7 @@ const MenuPortion = styled.div`
   flex-direction: column;
   width: 100vw;
 `
-const BottomPortion = MenuPortion.extend`
+const BottomPortion = styled(MenuPortion)`
   justify-content: flex-start;
   background-color: rgba(0, 0, 0, 0.25);
   padding-top: 10px;
@@ -52,29 +53,39 @@ const BottomPortion = MenuPortion.extend`
 
 class SignIn extends React.Component {
   public state = {
-    loaderHidden: false
+    loaderHidden: false,
+    authenticated: false
   };
 
   private ui = new firebaseui.auth.AuthUI(firebase.auth());
 
   public componentDidMount() {
+    firebase.auth().onAuthStateChanged(user => {
+      if (user) {
+        console.log("authenticated")
+        this.setState({authenticated: true});
+      }
+    })
+
     this.ui.start("#firebaseui-auth-container", {
       callbacks: {
         signInSuccessWithAuthResult: (authResult, redirectUrl) => {
           this.setState({loaderHidden: false});
+          console.log("auth in here");
           return false;
         },
         uiShown: () => {
           this.setState({loaderHidden: true});
+        },
+        signInFailure: (error) => {
+          console.log(error);
+          return new Promise((resolve, reject) => {});
         }
       },
       signInFlow: 'popup',
       credentialHelper: firebaseui.auth.CredentialHelper.NONE,
       signInOptions: [
-        {
-					provider: firebase.auth.EmailAuthProvider.PROVIDER_ID,
-					requireDisplayName: false
-				},
+        firebase.auth.EmailAuthProvider.PROVIDER_ID,
         firebase.auth.GoogleAuthProvider.PROVIDER_ID,
         // firebase.auth.FacebookAuthProvider.PROVIDER_ID
         // firebase.auth.TwitterAuthProvider.PROVIDER_ID,
@@ -85,6 +96,7 @@ class SignIn extends React.Component {
   public render() {
     return (
     <Background >
+      {this.state.authenticated ? <Redirect to="/GroupsList" /> : <div/>}
       <MenuPortion>
         <Title>Welcome to Group Split</Title>
         <Body>The easiest, fastest, and most effective way to split bills.</Body>
